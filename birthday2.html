@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just For You ❤️</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#ffffff,#dcdcdc,#111);
+min-height:100vh;
+overflow-x:hidden;
+}
+
+/* LOCK */
+#lockScreen{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+color:white;
+z-index:20;
+}
+
+input{
+padding:12px;
+border:none;
+border-radius:8px;
+margin-top:10px;
+}
+
+button{
+padding:12px 22px;
+margin:12px;
+border:none;
+border-radius:25px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+font-size:15px;
+}
+
+/* PAGE */
+.page{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:30px 15px;
+}
+
+.hidden{display:none}
+
+/* FRAME */
+.frame{
+padding:15px;
+border-radius:25px;
+background:linear-gradient(45deg,#ff9a9e,#fad0c4,#ffdde1);
+box-shadow:0 0 25px rgba(255,255,255,0.6);
+}
+
+video{
+width:320px;
+border-radius:20px;
+}
+
+/* TEXT */
+.topText{
+text-align:center;
+font-size:22px;
+color:white;
+text-shadow:0 0 10px black;
+margin-bottom:15px;
+}
+
+.message{
+margin-top:15px;
+text-align:center;
+color:white;
+text-shadow:0 0 8px black;
+}
+
+/* BUTTON AREA */
+.btnArea{
+text-align:center;
+margin-top:20px;
+}
+
+/* FLOATING */
+.floating{
+position:fixed;
+top:-50px;
+pointer-events:none;
+animation:fall linear infinite;
+z-index:0;
+opacity:0.7;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="lockScreen">
+<h2>Enter Password ❤️</h2>
+<input type="password" id="password">
+<button onclick="unlock()">Unlock</button>
+</div>
+
+<div id="pages"></div>
+
+<script>
+
+/* ===== HEADINGS ===== */
+const headings=[
+"You Are My Sunshine ☀️",
+"My Beautiful Girl 💖",
+"My Happiness 🌸",
+"My Heart Beat ❤️",
+"My Peace 🕊️",
+"My Sweet Memory 🌹",
+"My Favorite Smile 😊",
+"My Strength 💫",
+"My Lucky Charm 🍀",
+"My Dream Girl 🌙",
+"My Forever Person 💍",
+" You have good friends"
+];
+
+/* ===== MESSAGES ===== */
+const messages=[
+"Your smile makes my day brighter ❤️",
+"Your eyes tell beautiful stories ✨",
+"You make simple moments special 💖",
+"Your happiness means everything 🌸",
+"You are unique and amazing 💫",
+"Every moment with you feels magical 🌹",
+"You bring peace to my heart 💕",
+"You are stronger than you think 🌟",
+"Your kindness makes you beautiful 🌼",
+"You are my favorite notification ❤️",
+"Your laughter is my favorite song 🎶",
+"Forever grateful to have you 💍"
+];
+
+/* ===== CREATE 12 PAGES ===== */
+for(let i=1;i<=12;i++){
+document.getElementById("pages").innerHTML+=`
+<div id="page${i}" class="page hidden">
+<div>
+<h2 class="topText">${headings[i-1]}</h2>
+
+<div class="frame">
+<video controls src="v${i}.mp4"></video>
+</div>
+
+<p class="message">${messages[i-1]}</p>
+
+<div class="btnArea">
+${i>1?`<button onclick="showPage(${i-1})">⬅ Back</button>`:""}
+${i<12?`<button onclick="showPage(${i+1})">Next ➜</button>`:
+`<button onclick="location.href='index.html?home=true'">🏠 Home</button>`}
+</div>
+
+</div>
+</div>
+`;
+}
+
+/* ===== PASSWORD ===== */
+function unlock(){
+let pass=document.getElementById("password").value;
+if(pass==="S1@ManasaBirthday"){
+document.getElementById("lockScreen").style.display="none";
+showPage(1);
+}else{
+alert("Wrong Password ❌");
+}
+}
+
+/* ===== STOP VIDEOS ===== */
+function stopVideos(){
+document.querySelectorAll("video").forEach(v=>{
+v.pause();
+v.currentTime=0;
+});
+}
+
+/* ===== SHOW PAGE ===== */
+function showPage(n){
+stopVideos();
+document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+document.getElementById("page"+n).classList.remove("hidden");
+window.scrollTo(0,0);
+}
+
+/* ===== FLOATING HEARTS + ROSES ===== */
+function floating(){
+let items=["❤️","💖","🌹","🌸"];
+let el=document.createElement("div");
+el.className="floating";
+el.innerText=items[Math.floor(Math.random()*items.length)];
+el.style.left=Math.random()*100+"vw";
+el.style.fontSize=(18+Math.random()*25)+"px";
+el.style.animationDuration=(6+Math.random()*6)+"s";
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),12000);
+}
+
+setInterval(floating,700);
+
+</script>
+
+</body>
+</html>
