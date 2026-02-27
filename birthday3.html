@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final Surprise 💖</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
+body{
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  min-height:100vh;
+}
+
+/* LOCK */
+#lockScreen{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.7);
+  display:flex; justify-content:center; align-items:center;
+  z-index:10;
+}
+.lockBox{
+  background:#fff;
+  padding:30px;
+  border-radius:18px;
+  width:90%; max-width:320px;
+  text-align:center;
+}
+input{
+  padding:10px; width:100%;
+  margin:15px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+.btn{
+  padding:10px 18px;
+  border:none;
+  border-radius:25px;
+  background:#ff4d6d;
+  color:#fff;
+  margin:6px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+/* CONTENT */
+.hidden{display:none}
+.card{
+  background:#fff;
+  margin:20px auto;
+  padding:20px;
+  width:92%;
+  max-width:400px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+/* PHOTOS */
+.photoBox{margin-bottom:20px}
+.photoBox img{width:100%;border-radius:15px}
+.photoText{margin-top:8px;font-size:14px;color:#555}
+.photoText b{color:#ff4d6d}
+
+/* EFFECT CANVAS */
+canvas{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:999;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="lockScreen">
+  <div class="lockBox">
+    <h2>🔐 Final Password</h2>
+    <input type="password" id="password" placeholder="Enter password">
+    <button class="btn" onclick="unlock()">Unlock ➜</button>
+  </div>
+</div>
+
+<canvas id="fx"></canvas>
+
+<!-- PAGE -->
+<div id="finalPage" class="card hidden">
+  <h1>💖 Just For You 💖</h1>
+  <p>Choose the vibe you love ✨</p>
+
+  <!-- EFFECT CHOICES -->
+  <div>
+    <button class="btn" onclick="startHearts()">❤️ Hearts</button>
+    <button class="btn" onclick="startRoses()">🌹 Roses</button>
+    <button class="btn" onclick="startSparkles()">💫 Sparkles</button>
+    <button class="btn" onclick="startStars()">✨ Stars</button>
+  </div>
+
+  <!-- MUSIC -->
+  <audio id="song" src="song7.mp3" loop></audio>
+  <div>
+    <button class="btn" onclick="playSong()">▶️ Play Song</button>
+    <button class="btn" onclick="stopSong()">⏹️ Stop Song</button>
+  </div>
+
+  <!-- PHOTOS -->
+  <div class="photoBox">
+    <img src="p9.jpg">
+    <div class="photoText">💭 My favorite place?<br><b>Anywhere you are ❤️</b></div>
+  </div>
+
+  <div class="photoBox">
+    <img src="p9(1).jpg">
+    <div class="photoText">✨ Why I smile suddenly?<br><b>Because of you 😊</b></div>
+  </div>
+
+  <div class="photoBox">
+    <img src="p9(2).jpg">
+    <div class="photoText">💖 What fixes my bad days?<br><b>Your smile 🌸</b></div>
+  </div>
+
+  <div class="photoBox">
+    <img src="p9(3).jpg">
+    <div class="photoText">💫 What is one thing I never get tired of?<br><b>💌 Loving you.</b></div>
+  </div>
+
+  <div class="photoBox">
+    <img src="p10.jpg">
+    <div class="photoText">
+      ✨ What was my favorite dish on that table?<br>
+      <b>😊 You… sitting in front of me.</b>
+    </div>
+  </div>
+
+  <div class="photoBox">
+    <img src="p10(1).jpg">
+    <div class="photoText">
+      🍽️ Do you know why food tasted better that day?<br>
+      <b>❤️ Because I was sharing it with you.</b>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  
+  <button onclick="location.href='index.html?home=true'">🏠 Home</button>
+</div>
+
+<script>
+/* PASSWORD */
+function unlock(){
+  if(password.value==="SM@143"){
+    lockScreen.style.display="none";
+    finalPage.classList.remove("hidden");
+    startHearts();
+  } else alert("Wrong password ❌");
+}
+
+/* MUSIC CONTROLS */
+function playSong(){
+  document.getElementById("song").play();
+}
+function stopSong(){
+  const s=document.getElementById("song");
+  s.pause();
+  s.currentTime=0;
+}
+
+/* HOME */
+function goHome(){
+  stopSong();
+  window.location.href="birthday.html";
+}
+
+/* EFFECT ENGINE */
+const c=document.getElementById("fx"),x=c.getContext("2d");
+resize(); window.onresize=resize;
+function resize(){c.width=innerWidth;c.height=innerHeight}
+
+let items=[], mode="";
+
+function clearEffects(){
+  items=[]; x.clearRect(0,0,c.width,c.height);
+}
+
+function startHearts(){
+  clearEffects(); mode="heart";
+  for(let i=0;i<60;i++)
+    items.push({x:Math.random()*c.width,y:c.height+Math.random()*c.height,s:20+Math.random()*15,v:.4+Math.random(),a:Math.random()});
+}
+function startRoses(){
+  clearEffects(); mode="rose";
+  for(let i=0;i<40;i++)
+    items.push({x:Math.random()*c.width,y:-Math.random()*c.height,s:22+Math.random()*10,v:.6+Math.random()});
+}
+function startSparkles(){
+  clearEffects(); mode="sparkle";
+  for(let i=0;i<80;i++)
+    items.push({x:Math.random()*c.width,y:Math.random()*c.height,a:Math.random(),r:1+Math.random()*2});
+}
+function startStars(){
+  clearEffects(); mode="star";
+  for(let i=0;i<50;i++)
+    items.push({x:Math.random()*c.width,y:-Math.random()*c.height,s:14+Math.random()*10,v:.5+Math.random()});
+}
+
+function animate(){
+  x.clearRect(0,0,c.width,c.height);
+  items.forEach(i=>{
+    if(mode==="heart"){
+      x.globalAlpha=i.a; x.font=i.s+"px Arial";
+      x.fillStyle="#ff4d6d"; x.fillText("❤",i.x,i.y);
+      i.y-=i.v; if(i.y<-50)i.y=c.height+50;
+    }
+    if(mode==="rose"){
+      x.font=i.s+"px Arial"; x.fillText("🌹",i.x,i.y);
+      i.y+=i.v; if(i.y>c.height+50)i.y=-50;
+    }
+    if(mode==="sparkle"){
+      x.globalAlpha=i.a; x.fillStyle="#fff";
+      x.beginPath(); x.arc(i.x,i.y,i.r,0,Math.PI*2); x.fill();
+    }
+    if(mode==="star"){
+      x.font=i.s+"px Arial"; x.fillText("✨",i.x,i.y);
+      i.y+=i.v; if(i.y>c.height+50)i.y=-50;
+    }
+  });
+  x.globalAlpha=1;
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
