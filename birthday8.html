@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just For You ❤️</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#ffffff,#dcdcdc,#111);
+min-height:100vh;
+overflow-x:hidden;
+}
+
+/* LOCK */
+#lockScreen{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+color:white;
+z-index:20;
+}
+
+input{
+padding:12px;
+border:none;
+border-radius:8px;
+margin-top:10px;
+}
+
+button{
+padding:12px 22px;
+margin:12px;
+border:none;
+border-radius:25px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+font-size:15px;
+}
+
+/* PAGE */
+.page{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:30px 15px;
+position:relative;
+z-index:2;
+}
+
+.hidden{display:none}
+
+/* 🎬 16:9 FRAME */
+.frame{
+width:90vw;
+max-width:700px;
+aspect-ratio:16/9;
+background:black;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 0 30px rgba(255,255,255,0.5);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* ✅ FULL VIDEO CLEAN VISIBLE */
+video{
+width:100%;
+height:100%;
+object-fit:contain;
+background:black;
+}
+
+/* TEXT */
+.topText{
+text-align:center;
+font-size:22px;
+color:white;
+text-shadow:0 0 10px black;
+margin-bottom:15px;
+}
+
+.message{
+margin-top:15px;
+text-align:center;
+color:white;
+text-shadow:0 0 8px black;
+white-space:pre-line;
+}
+
+/* BUTTON AREA */
+.btnArea{
+text-align:center;
+margin-top:20px;
+}
+
+/* FLOATING */
+.floating{
+position:fixed;
+top:-60px;
+pointer-events:none;
+animation:fall linear forwards;
+z-index:1;
+opacity:0.7;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh) translateX(0) rotate(0deg);}
+100%{transform:translateY(110vh) translateX(40px) rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<div id="lockScreen">
+<h2>Enter Password ❤️</h2>
+<input type="password" id="password">
+<button onclick="unlock()">Unlock</button>
+</div>
+
+<div id="pages"></div>
+
+<script>
+
+/* HEADINGS */
+const headings=[
+"A Small Surprise… Please Stay Calm 🙂",
+"Please Don’t Feel Bad… It Means A Lot To Me 💖"
+];
+
+/* MESSAGES */
+const messages=[
+"💕🥰❤️",
+
+`Hey Manasa… oka small thing cheppali… please don’t feel bad 🙈
+
+Nee permission lekunda mana video call konchem record chesa… but only for memory. Mana moments chala special anipinchai… so save cheskovali anipinchindi ❤️
+
+I think chuste nuvvu kuda happy feel avthav ani anukuna… but if you don’t like it, I will delete immediately. Nee feelings naaku important 🙂
+
+Just ninnu miss ayithe chudali ani record chesa… anthe....`
+];
+
+/* VIDEOS */
+const videos=[
+"smvrec1.mp4",
+"smvrec2.mp4"
+];
+
+/* CREATE PAGES */
+for(let i=1;i<=2;i++){
+document.getElementById("pages").innerHTML+=`
+<div id="page${i}" class="page hidden">
+<div>
+<h2 class="topText">${headings[i-1]}</h2>
+
+<div class="frame">
+<video controls src="${videos[i-1]}"></video>
+</div>
+
+<p class="message">${messages[i-1]}</p>
+
+<div class="btnArea">
+${i>1?`<button onclick="showPage(${i-1})">⬅ Back</button>`:""}
+${i<2?`<button onclick="showPage(${i+1})">Next ➜</button>`:
+`<button onclick="location.href='index.html?home=true'">🏠 Home</button>`}
+</div>
+
+</div>
+</div>
+`;
+}
+
+function unlock(){
+let pass=document.getElementById("password").value;
+if(pass==="S8@123"){
+document.getElementById("lockScreen").style.display="none";
+showPage(1);
+}else alert("Wrong Password ❌");
+}
+
+function stopVideos(){
+document.querySelectorAll("video").forEach(v=>{
+v.pause();
+v.currentTime=0;
+});
+}
+
+function showPage(n){
+stopVideos();
+document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+document.getElementById("page"+n).classList.remove("hidden");
+window.scrollTo(0,0);
+}
+
+function floating(){
+let items=["❤️","💖","🌹","🌸"];
+let el=document.createElement("div");
+el.className="floating";
+el.innerText=items[Math.floor(Math.random()*items.length)];
+
+el.style.left=Math.random()<0.5 ? Math.random()*20+"vw" : (80+Math.random()*20)+"vw";
+el.style.fontSize=(18+Math.random()*20)+"px";
+el.style.animationDuration=(10+Math.random()*8)+"s";
+
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),18000);
+}
+
+setInterval(floating,1200);
+
+</script>
+</body>
+</html>
